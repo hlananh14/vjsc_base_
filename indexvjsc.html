@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VJSC × Base 2.0</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Bản trình bày cho khách hàng VJSC, theo concept "Xưởng in × Base BPM":
+   hero navy + thân trang nền sáng; ba chương Hiện trạng, Mục tiêu, How; mỗi chương có tiêu đề gradient,
+   cảnh minh họa chuyển động và một "thông điệp" nổi bật. Không có phần Lộ trình. */
+:root{
+  color-scheme:light;
+  --base:#1468E0; --base-2:#3B82F0; --deep:#0A3F9C; --navy:#0B1F4D; --night:#081739;
+  --sky:#E8F1FF; --mist:#F3F6FB; --paper:#FCFDFF; --line:#DFE6F1; --line-2:#EBF0F7;
+  --ink:#0E1A35; --body:#3D4A66; --muted:#66738F;
+  --amber:#F5A524; --amber-bg:#FFF4DE; --amber-ink:#8A5A0B; --orange:#E2701A; --orange-bg:#FFEEDD;
+  --green:#0F9460; --green-bg:#E2F5EC; --red:#D23F36; --red-bg:#FDE9E7;
+  --slate:#44546b; --slate-bg:#edf0f5; --slate-bd:#ced6e0;
+  --charter:#1468E0; --charter-bg:#E8F1FF; --charter-bd:#BFD6FA;
+  --xtdl:#B45F06; --xtdl-bg:#FFF1DC; --xtdl-bd:#F2D3A3;
+  --tour:#0F8A5F; --tour-bg:#E2F5EC; --tour-bd:#B5E3CC;
+  --c:var(--slate); --cbg:var(--slate-bg); --cbd:var(--slate-bd);
+  --font:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.65,0,.35,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--mist);color:var(--ink);font:15px/1.6 var(--font);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:60}
+h1,h2,h3,h4,p,ul,ol,dl,dd{margin:0}
+h1,h2,h3,h4{text-wrap:balance;letter-spacing:-.02em;line-height:1.2}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--base);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+.charter{--c:var(--charter);--cbg:var(--charter-bg);--cbd:var(--charter-bd)}
+.xtdl{--c:var(--xtdl);--cbg:var(--xtdl-bg);--cbd:var(--xtdl-bd)}
+.tour{--c:var(--tour);--cbg:var(--tour-bg);--cbd:var(--tour-bd)}
+.shared{--c:var(--slate);--cbg:var(--slate-bg);--cbd:var(--slate-bd)}
+.deal{--c:#0E1A35;--cbg:#EAEFF7;--cbd:#C4D0E0}
+
+/* ================= HERO ================= */
+.hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(1000px 420px at 88% -10%,rgba(59,130,240,.55),transparent 60%),linear-gradient(160deg,var(--deep) 0%,var(--navy) 55%,var(--night) 100%)}
+.hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1px);background-size:22px 22px;mask-image:linear-gradient(180deg,#000 30%,transparent);pointer-events:none}
+.hero-in{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:36px;align-items:center;padding-block:44px 46px}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#BFD6FF}
+.kicker::before{content:"";width:24px;height:2px;background:var(--amber);border-radius:2px}
+.hero h1{font-size:clamp(32px,4.2vw,54px);font-weight:800;line-height:1.06;letter-spacing:-.035em;margin:14px 0 16px}
+.hero h1 em{font-style:normal;color:var(--amber);display:block}
+.hero .lead{font-size:17px;color:#D3E1FA;max-width:56ch;margin-bottom:22px}
+.hpills{display:flex;flex-wrap:wrap;gap:10px}
+.hpills span{font-size:13.5px;color:#BFD6FF;border:1px solid rgba(191,214,255,.3);border-radius:999px;padding:6px 14px}
+.hpills b{color:#fff;font-weight:800}
+.jcard{background:#FCFDFF;color:var(--ink);border-radius:22px;padding:18px 20px 20px;box-shadow:0 30px 70px rgba(3,12,40,.5),0 0 0 1px rgba(255,255,255,.12)}
+.jcard small{display:block;font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--muted);margin-bottom:14px}
+.jrow{display:flex;align-items:center;flex-wrap:nowrap}
+.jp{flex:1 1 0;min-width:0;border:2px solid var(--c);background:var(--cbg);border-radius:12px;padding:8px 6px;text-align:center;font-size:13px;font-weight:800;color:var(--c)}
+.jp.stack{display:flex;flex-direction:column;gap:4px;padding:6px}
+.jp.stack span{display:block;background:#fff;border-radius:8px;padding:3px 4px;font-size:12.5px}
+.jp.dk{background:var(--navy);border-color:var(--navy);color:#fff}
+.jp.job{border-style:dashed;background:#fff;color:var(--body);border-color:#9AA9C4}
+.jsv{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line-2)}
+.jsv span{font-size:12.5px;font-weight:700;border-radius:999px;padding:4px 11px;background:var(--cbg);color:var(--c);border:1px solid var(--cbd)}
+.jcap{font-size:12.5px;color:var(--muted);margin-top:12px}
+
+/* ================= ANIMATED ARROWS ================= */
+.hc,.conn,.vconn{position:relative;flex:0 0 32px;align-self:center;height:18px}
+.hc::before,.conn::before{content:"";position:absolute;left:0;right:8px;top:8px;height:2px;
+  background:repeating-linear-gradient(90deg,var(--ac,var(--c)) 0 6px,transparent 6px 11px);background-size:11px 2px;animation:dashh .7s linear infinite}
+.hc::after,.conn::after{content:"";position:absolute;right:0;top:3px;width:0;height:0;
+  border-left:9px solid var(--ac,var(--c));border-top:6px solid transparent;border-bottom:6px solid transparent;
+  animation:nudgeh 1.2s ease-in-out infinite;animation-delay:calc(var(--i,0) * .15s)}
+.conn{flex-basis:36px}.conn.sm{flex-basis:24px}
+.vconn{flex:0 0 34px;width:18px;height:34px;margin-inline:auto}
+.vconn::before{content:"";position:absolute;left:8px;top:0;bottom:8px;width:2px;
+  background:repeating-linear-gradient(180deg,var(--ac,var(--c)) 0 6px,transparent 6px 11px);background-size:2px 11px;animation:dashv .7s linear infinite}
+.vconn::after{content:"";position:absolute;left:3px;bottom:0;border-top:9px solid var(--ac,var(--c));border-left:6px solid transparent;border-right:6px solid transparent;animation:nudgev 1.2s ease-in-out infinite}
+.hc{--ac:var(--navy)}
+@keyframes dashh{to{background-position:11px 0}}
+@keyframes dashv{to{background-position:0 11px}}
+@keyframes nudgeh{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+@keyframes nudgev{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+@keyframes blink{50%{opacity:.35}}
+@keyframes fin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ================= TABS ================= */
+.tabbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(252,253,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding-block:10px}
+.tab{appearance:none;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:10px 14px;display:flex;gap:12px;align-items:center;min-width:0}
+.tab .n{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:15px;background:var(--sky);color:var(--deep)}
+.tab b{display:block;font-size:15.5px;font-weight:800;line-height:1.2}
+.tab small{display:block;font-size:12px;color:var(--muted);line-height:1.3}
+.tab:hover{border-color:var(--base)}
+.tab[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.tab[aria-selected="true"] .n{background:var(--amber);color:var(--navy)}
+.tab[aria-selected="true"] small{color:#B8CCF0}
+.panel[hidden]{display:none}
+.panel{padding-block:44px 72px}
+
+/* ================= CHAPTER HEAD ================= */
+.ch-head{position:relative;padding-left:26px;margin-bottom:30px}
+.ch-head::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:6px;border-radius:6px;background:linear-gradient(180deg,var(--base),var(--amber))}
+.ch-label{display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;color:var(--base);letter-spacing:.14em;text-transform:uppercase}
+.ch-label .no{font-size:15px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--base),var(--deep));border-radius:10px;padding:5px 11px;box-shadow:0 6px 16px rgba(20,104,224,.3);letter-spacing:.04em}
+.ch-label .t{color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:none}
+.ch-head h2{font-size:clamp(28px,3.6vw,46px);line-height:1.1;font-weight:800;letter-spacing:-.03em;margin:12px 0 10px;max-width:24ch;
+  background:linear-gradient(90deg,var(--navy) 0%,var(--deep) 55%,var(--base) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ch-head .idea{font-size:17px;color:var(--body);max-width:70ch}
+.ch-head .idea b{color:var(--ink)}
+h3.sh{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:22px;font-weight:800;letter-spacing:-.02em;margin:46px 0 6px}
+h3.sh .k{font:800 11px/1 var(--font);letter-spacing:.14em;background:var(--amber);color:var(--navy);border-radius:999px;padding:5px 11px}
+.shi{color:var(--body);max-width:74ch;margin-bottom:18px}
+
+/* ================= MESSAGE + NEXT ================= */
+.msg{position:relative;overflow:hidden;margin-top:34px;background:linear-gradient(140deg,var(--deep),var(--navy) 60%,var(--night));color:#fff;border-radius:22px;padding:26px 30px}
+.msg small{display:block;font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--amber);margin-bottom:8px}
+.msg p{font-size:clamp(19px,2.2vw,25px);font-weight:700;line-height:1.4;letter-spacing:-.015em;max-width:44ch}
+.msg p em{font-style:normal;color:var(--amber)}
+.msg::after{content:"“";position:absolute;right:26px;top:-18px;font-size:150px;font-weight:800;color:rgba(255,255,255,.08);line-height:1}
+.nextbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:18px}
+.nextbar p{font-size:17px;font-weight:600;color:var(--body)}
+.nextbtn{appearance:none;border:0;background:var(--amber);color:var(--navy);font-weight:800;font-size:15.5px;border-radius:14px;padding:13px 20px;display:inline-flex;align-items:center;gap:10px}
+.nextbtn:hover{background:#FFB938}
+.nextbtn .hc{--ac:var(--navy);flex-basis:28px}
+
+/* ================= TAB 1: SILOS ================= */
+.sils{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.sil{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 18px 36px -28px rgba(11,31,77,.55);min-width:0}
+.sil .sv{height:318px;background:radial-gradient(120% 90% at 30% 0%,#F4F7FC,#E3E9F3);position:relative;overflow:hidden;padding:16px}
+.sil .cp{padding:16px 18px 20px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px;flex:1}
+.sil .cp b{font-size:17.5px;line-height:1.3;letter-spacing:-.01em}
+.sil .cp .d{font-size:14px;color:var(--body)}
+.st{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.08em;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.st.ok{background:var(--green-bg);color:#0A5A3A;border:1px solid var(--tour-bd)}
+.st.q{background:var(--amber-bg);color:var(--amber-ink);border:1px solid #F3D7A2}
+.scap{font-size:12.5px;color:var(--muted);margin-top:10px}
+/* inbox */
+.inbox{height:100%;background:#fff;border-radius:14px;box-shadow:0 14px 30px rgba(11,31,77,.15);padding:10px;display:flex;flex-direction:column;gap:5px;position:relative}
+.ib-h{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:800;padding:2px 4px 7px;border-bottom:1px solid var(--line-2)}
+.ib-badge{background:var(--red);color:#fff;border-radius:999px;padding:1px 9px;font-size:12px;min-width:26px;text-align:center}
+.ib-r{display:flex;align-items:center;gap:9px;padding:5px 8px;border-radius:10px;background:var(--mist);opacity:0;transform:translateY(-12px);transition:opacity .35s,transform .35s}
+.ib-r.show{opacity:1;transform:none}
+.ib-r .av{flex:none;width:26px;height:26px;border-radius:50%;background:var(--base);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800}
+.ib-r div{min-width:0;flex:1}
+.ib-r b{display:block;font-size:12px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib-r span{display:block;font-size:11.5px;color:var(--muted);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib-r em{flex:none;font-style:normal;font-weight:800;font-size:11px;color:var(--amber-ink);background:var(--amber-bg);border-radius:999px;padding:1px 8px}
+.ib-q{position:absolute;left:12px;right:12px;bottom:10px;background:var(--navy);color:#fff;border-radius:12px;padding:9px 12px;font-size:12.5px;font-weight:700;opacity:0;transform:translateY(10px);transition:opacity .4s,transform .4s;box-shadow:0 12px 24px rgba(11,31,77,.35)}
+.ib-q.show{opacity:1;transform:none}
+/* records */
+.rec{height:100%;display:flex;flex-direction:column;gap:12px}
+.rec-t{background:#fff;border-radius:14px;box-shadow:0 14px 30px rgba(11,31,77,.15);padding:10px;display:flex;flex-direction:column;gap:5px;flex:1;overflow:hidden}
+.rec-h{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;color:var(--deep);padding:2px 2px 6px;border-bottom:1px solid var(--line-2)}
+.rec-h em{font-style:normal;font-size:10.5px;color:var(--green);background:var(--green-bg);border-radius:999px;padding:1px 8px}
+.rec-r{display:flex;justify-content:space-between;font-size:11.5px;background:var(--mist);border-radius:8px;padding:5px 9px;opacity:0;animation:recin 7.2s linear infinite;animation-delay:calc(var(--k) * -1.2s)}
+.rec-r i{font-style:normal;color:var(--green);font-weight:700}
+@keyframes recin{0%{opacity:0;transform:translateX(-14px)}5%{opacity:1;transform:none}86%{opacity:1}96%,100%{opacity:0}}
+.rec-p{display:flex;align-items:center;gap:10px}
+.rec-p .pp{flex:none;width:36px;height:36px;border-radius:50%;background:var(--base);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px}
+.rec-p .x{flex:0 0 46px;height:0;border-top:2px dashed var(--orange);position:relative}
+.rec-p .x::after{content:"×";position:absolute;right:-4px;top:-15px;color:var(--orange);font-weight:800;font-size:19px}
+.rec-p span{font-size:12px;line-height:1.35;color:var(--body)}
+/* one partner, three places */
+.s3{width:100%;height:100%;display:block}
+.s3 text{font-family:inherit}
+.s3 .ln{stroke:var(--orange);stroke-width:2;stroke-dasharray:5 5;fill:none;animation:dashoff 1s linear infinite}
+@keyframes dashoff{to{stroke-dashoffset:-10}}
+.s3 .q{font-size:16px;font-weight:800;fill:var(--orange);animation:blink 1.4s infinite}
+.s3 .nb{fill:#fff;stroke-width:2}
+.s3 .tx{font-size:11.5px;font-weight:800}
+.s3 .tx2{font-size:10px;fill:var(--muted)}
+/* facts */
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.fact{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.fact b{display:block;font-size:34px;font-weight:800;letter-spacing:-.03em;color:var(--base);line-height:1.1}
+.fact span{display:block;font-size:13.5px;color:var(--body);margin-top:4px}
+.fact.key{background:var(--navy);border-color:var(--navy)}
+.fact.key b{color:var(--amber)}.fact.key span{color:#CFDCF5}
+/* questions */
+.qs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.q{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px 18px;min-width:0}
+.q .area{display:inline-block;font:800 11px/1 var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--c);background:var(--cbg);border:1px solid var(--cbd);border-radius:6px;padding:4px 8px;margin-bottom:9px}
+.q h4{font-size:15.5px;margin-bottom:5px;letter-spacing:-.01em}
+.q p{font-size:13.5px;color:var(--muted)}
+.qs.wide{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* ================= TAB 2 ================= */
+.outs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.oc{position:relative;background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px 18px 18px;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden}
+.oc::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,var(--base),var(--amber))}
+.oc .no{width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--amber);display:grid;place-items:center;font-weight:800;font-size:14px}
+.oc h4{font-size:18px;font-weight:800;letter-spacing:-.02em}
+.oc p{font-size:14px;color:var(--body)}
+.oc.hl{background:var(--navy);border-color:var(--navy);color:#fff}
+.oc.hl .no{background:var(--amber);color:var(--navy)}
+.oc.hl p{color:#CFDCF5}
+.ba{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.ba-h,.ba-r{display:grid;grid-template-columns:minmax(120px,.7fr) minmax(0,1.3fr) 34px minmax(0,1.5fr);gap:14px;padding:13px 20px;align-items:center}
+.ba-h{background:var(--navy);color:#fff;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.ba-h span:nth-child(4){color:var(--amber)}
+.ba-r{border-top:1px solid var(--line-2);font-size:14px}
+.ba-r .t{font-weight:800}
+.ba-r .b{background:var(--orange-bg);color:#7A3C05;border-radius:10px;padding:8px 11px;display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.ba-r .a{background:var(--green-bg);color:#0A4B31;border-radius:10px;padding:8px 11px;font-weight:700}
+.ba-r .arr{display:flex;justify-content:center}
+.ba-r .arr .hc{flex-basis:26px;--ac:var(--base)}
+.wb{background:#fff;border-radius:22px;box-shadow:0 30px 60px -30px rgba(11,31,77,.5),0 0 0 1px var(--line);overflow:hidden}
+.wb-top{display:flex;align-items:center;gap:7px;padding:11px 16px;background:var(--mist);border-bottom:1px solid var(--line);font-size:12.5px;font-weight:700;color:var(--muted)}
+.wb-top i{width:10px;height:10px;border-radius:50%;background:#D5DCE8}
+.wb-top span{margin-left:8px}
+.wb-top em{margin-left:auto;font-style:normal;font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--amber-ink);background:var(--amber-bg);border-radius:999px;padding:2px 10px}
+.wb-body{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.5fr);gap:22px;padding:18px 20px 20px}
+.wb h4{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.tasks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.tasks li{display:flex;flex-direction:column;gap:4px;background:var(--mist);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.4}
+.tg{align-self:flex-start;font-size:10.5px;font-weight:800;letter-spacing:.06em;border-radius:999px;padding:1px 9px;color:var(--c);background:var(--cbg);border:1px solid var(--cbd)}
+.kbw{overflow-x:auto}
+.kb{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;min-width:540px;height:214px}
+.kcol{background:var(--mist);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px}
+.kcol small{font-size:10.5px;font-weight:800;color:var(--deep);line-height:1.25;min-height:26px}
+.kmini{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:11px;line-height:1.3;color:var(--muted)}
+.kcard{position:absolute;top:112px;left:calc((100% - 24px) / 4 * var(--ci,1) + 8px * var(--ci,1) + 8px);width:calc((100% - 24px) / 4 - 16px);background:#fff;border:2px solid var(--base);border-radius:10px;padding:7px 8px;font-size:11.5px;line-height:1.3;box-shadow:0 10px 22px rgba(20,104,224,.3);transition:left .8s var(--ease);z-index:2}
+.kcard b{display:block;font-size:12px}
+.kcard span{color:var(--base);font-weight:700;font-size:10.5px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;font-size:14px;font-weight:700;line-height:1.4;border-left:5px solid var(--amber)}
+.kpi small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);margin-top:4px}
+
+/* ================= TAB 3 ================= */
+.subnav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.subnav button{appearance:none;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 15px;font-weight:700;font-size:13.5px;color:var(--body)}
+.subnav button:hover{border-color:var(--base);color:var(--base)}
+.anch{scroll-margin-top:96px}
+.rail{display:flex;align-items:stretch}
+.nd{flex:1 1 0;min-width:0;background:#fff;border:2px solid var(--c);border-radius:14px;padding:13px 13px 15px;display:flex;flex-direction:column;gap:8px;box-shadow:0 8px 16px -12px rgba(20,35,59,.35)}
+.nd b{font-size:14px;line-height:1.3}
+.nd .num{width:26px;height:26px;border-radius:50%;background:var(--c);color:#fff;font:600 12px/26px var(--mono);text-align:center;flex:none}
+.nd.first{background:var(--cbg)}
+.nd.last{background:var(--c);color:#fff}
+.nd.last .num{background:#fff;color:var(--c)}
+.nd.obj{padding:14px 15px}
+.nd.obj b{font-size:16px;color:var(--c)}
+.nd.obj span{font-size:12.5px;color:var(--body);line-height:1.45}
+.nd.dash{border-style:dashed;background:var(--mist)}
+.nd.deal{position:relative;overflow:hidden}
+.nd.deal::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,var(--charter),var(--xtdl),var(--tour))}
+.col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.col.fan{flex:0 0 auto;gap:8px}
+.fo{display:flex;align-items:center}
+.objmap{--c:var(--ink)}
+.out{font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px;white-space:nowrap}
+.out.won{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
+.out.lost{background:var(--red-bg);color:var(--red);border:1px solid var(--red)}
+.out.hold{background:var(--amber-bg);color:var(--amber-ink);border:1px solid var(--amber)}
+.ex2{max-width:780px;margin-top:16px}
+/* matrix */
+.mx{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:22px}
+.mhead,.mrow{display:grid;grid-template-columns:170px repeat(4,minmax(0,1fr))}
+.mhead>div{padding:12px 14px;font-weight:800;font-size:13.5px;border-left:1px solid var(--line);background:var(--mist)}
+.mhead>div:first-child{border-left:0;font:700 11px/1.4 var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mhead .h-shared{background:var(--slate-bg);color:var(--slate)}
+.mhead .h-charter{background:var(--charter-bg);color:var(--charter)}
+.mhead .h-xtdl{background:var(--xtdl-bg);color:var(--xtdl)}
+.mhead .h-tour{background:var(--tour-bg);color:var(--tour)}
+.mrow{border-top:1px solid var(--line)}
+.mrow>div{padding:14px;border-left:1px solid var(--line);font-size:13.5px;min-width:0}
+.mobj{background:var(--mist);border-left:0!important}
+.mobj b{display:block;font-size:18px;margin-bottom:4px}
+.mobj span{color:var(--muted);font-size:12.5px;line-height:1.45;display:block}
+.cell .ex{display:block;margin-top:9px;font:400 12px/1.45 var(--mono);color:var(--c);background:var(--cbg);border-radius:6px;padding:5px 8px;overflow-wrap:anywhere}
+.keep{margin-top:16px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--amber);border-radius:12px;padding:13px 16px;font-size:14px;max-width:92ch}
+/* journey */
+.jr{display:flex;align-items:stretch}
+.nd.jn{gap:7px}
+.nd.jn p{font-size:13px;color:var(--body);line-height:1.45}
+.nd.jn .who{display:flex;flex-wrap:wrap;gap:4px}
+.nd.jn .who span{font-size:11px;font-weight:600;border-radius:999px;padding:2px 8px;background:var(--mist);color:var(--body)}
+.nd.jn .who span.ob{background:var(--sky);color:var(--deep);font-weight:700}
+.nd.jn.hl{background:var(--navy);border-color:var(--navy);color:#fff}
+.nd.jn.hl p{color:#CFDCF5}
+.nd.jn.hl .num{background:var(--amber);color:var(--navy)}
+.nd.jn.hl .who span{background:rgba(255,255,255,.12);color:#DCE8FF}
+.nd.jn.hl .who span.ob{background:var(--amber);color:var(--navy)}
+.nd.jn.key{background:var(--amber-bg);border-color:var(--amber)}
+.nd.jn.key .num{background:var(--amber);color:var(--navy)}
+.jgap{display:flex;justify-content:center;align-items:center;gap:14px;margin-block:4px;--ac:var(--base)}
+.jgap span{font-size:13px;font-weight:700;color:var(--base)}
+.jnote{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;font-size:13.5px}
+.jnote span{border-radius:10px;padding:7px 12px}
+.jnote .l1{background:var(--navy);color:#fff}
+.jnote .l2{background:var(--amber-bg);color:var(--amber-ink);border:1px solid var(--amber)}
+.jnote .l3{background:var(--red-bg);color:var(--red)}
+/* pipelines */
+.svcblock{margin-top:26px}
+.svchead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:12px;padding-bottom:8px;border-bottom:3px solid var(--c)}
+.svchead h4{font-size:21px;color:var(--c);font-weight:800}
+.svchead span{color:var(--muted);font-size:13.5px}
+.pflow{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 18px 8px;margin-bottom:16px;box-shadow:0 14px 28px -24px rgba(20,35,59,.5)}
+.pflow>header{margin-bottom:16px}
+.pflow h5{font-size:17px;margin:0;font-weight:800}
+.pflow header p{color:var(--body);font-size:13.5px;margin-top:3px;max-width:80ch}
+.pflow .rail{padding-bottom:6px}
+.pdet{margin-top:14px;border-top:1px solid var(--line)}
+.pdet summary,.fdet>summary{cursor:pointer;list-style:none;padding:12px 2px;font-weight:700;font-size:13.5px;color:var(--c)}
+.pdet summary::-webkit-details-marker,.fdet>summary::-webkit-details-marker{display:none}
+.pdet summary::before,.fdet>summary::before{content:"▸";display:inline-block;margin-right:8px;font-size:12px}
+.pdet[open] summary::before,.fdet[open]>summary::before{content:"▾"}
+.stage{display:grid;grid-template-columns:minmax(0,1.05fr) repeat(3,minmax(0,1.5fr));gap:8px 18px;padding:13px 4px;border-top:1px solid var(--line);font-size:13.5px}
+.stage .sn{font-weight:800;display:flex;gap:8px;align-items:baseline}
+.stage .sn i{font:500 12px/1 var(--mono);font-style:normal;color:var(--c)}
+.lbl{display:block;font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:13px;color:var(--body);margin-bottom:6px}
+/* fields */
+.fdet{background:#fff;border:1px solid var(--line);border-radius:16px;padding:4px 18px;margin-bottom:14px}
+.fdet>summary{font-size:15px;color:var(--ink);padding:14px 2px}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 16px}
+.seg button{appearance:none;font:700 13.5px/1 var(--font);color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:10px 16px;display:inline-flex;align-items:center;gap:8px}
+.seg button i{width:9px;height:9px;border-radius:50%;background:var(--c);display:inline-block}
+.seg button[aria-pressed="true"]{background:var(--cbg);border-color:var(--c);color:var(--c)}
+.unit{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.unit>header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;padding:14px 18px 4px}
+.unit h4{font-size:16.5px;color:var(--c);font-weight:800}
+.unit .cnt{font:500 11.5px/1 var(--mono);color:var(--muted)}
+.unit .desc{padding:0 18px 12px;color:var(--body);font-size:13.5px;max-width:82ch}
+.gtitle{padding:9px 18px;background:var(--cbg);color:var(--c);font:700 12.5px/1.3 var(--font);border-top:1px solid var(--cbd)}
+.ftable{border-top:1px solid var(--line)}
+.fhead,.frow{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr) minmax(0,1.7fr);gap:6px 16px;padding:9px 18px}
+.fhead{background:var(--mist);font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.frow{border-top:1px solid var(--line);font-size:13.5px;align-items:baseline}
+.frow:nth-child(even){background:#FAFBFE}
+.fname{font-weight:700}
+.ftype{font:400 12px/1.4 var(--mono);color:var(--c)}
+.fex{color:var(--muted);overflow-wrap:anywhere}
+.handoff{background:var(--cbg);border:1px solid var(--cbd);border-radius:12px;padding:14px 18px;margin-bottom:14px}
+.handoff h4{font-size:15px;color:var(--c);margin-bottom:4px}
+.handoff p{font-size:13.5px;color:var(--body);margin-bottom:10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-size:12.5px;background:#fff;border:1px solid var(--cbd);border-radius:6px;padding:3px 9px}
+.endcard{margin-top:30px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(140deg,var(--deep),var(--navy) 60%,var(--night));color:#fff;border-radius:22px;padding:22px 28px}
+.endcard small{font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--amber)}
+.endcard h4{font-size:clamp(20px,2.2vw,26px);font-weight:800;margin:4px 0 6px}
+.endcard p{color:#CFDCF5;font-size:15px;max-width:60ch}
+
+
+/* ===== Hiện trạng: cảnh số liệu ===== */
+.mbx{height:100%;background:#fff;border-radius:14px;box-shadow:0 14px 30px rgba(11,31,77,.15);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.mbx-h{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:800;padding:2px 2px 7px;border-bottom:1px solid var(--line-2)}
+.mbx-h em{font-style:normal;font-size:11px;color:var(--amber-ink);background:var(--amber-bg);border-radius:999px;padding:1px 9px}
+.mbg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.mbg span{background:var(--mist);border:1px solid var(--line);border-radius:8px;padding:6px 2px;text-align:center;font-size:11px;font-weight:700;color:var(--deep);animation:mbp 4.8s ease-in-out infinite;animation-delay:calc(var(--k) * .4s)}
+@keyframes mbp{0%,22%,100%{background:var(--mist);border-color:var(--line)}8%{background:var(--sky);border-color:var(--base)}}
+.mbx .vconn{--ac:var(--base);flex:0 0 28px;height:28px}
+.mbx-b{background:var(--navy);color:#fff;border-radius:12px;padding:9px 12px;font-size:12.5px;font-weight:700;text-align:center}
+.mbx-b small{display:block;font-weight:500;color:#B8CCF0;font-size:11.5px}
+.s3 .bx{fill:#fff;stroke-width:2}
+.s3 .lb{font-size:10.5px;font-weight:700;fill:var(--body)}
+.s3 .big{font-size:13px;font-weight:800}
+.s3 .ln3{stroke:var(--base);stroke-width:2;stroke-dasharray:5 5;fill:none;animation:dashoff 1s linear infinite}
+.stg{height:100%;background:#fff;border-radius:14px;box-shadow:0 14px 30px rgba(11,31,77,.15);padding:10px 12px;display:flex;flex-direction:column;gap:10px}
+.stg-h{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:800;padding:2px 2px 7px;border-bottom:1px solid var(--line-2)}
+.stg-h em{font-style:normal;font-size:11px;color:var(--amber-ink);background:var(--amber-bg);border-radius:999px;padding:1px 9px}
+.stgr{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px}
+.stgr span{aspect-ratio:1;display:grid;place-items:center;border-radius:6px;font:600 10.5px/1 var(--mono);background:var(--sky);color:var(--deep);border:1.5px solid transparent;animation:stp 6.6s linear infinite;animation-delay:calc(var(--k) * .33s)}
+.stgr span.m{background:var(--amber-bg);color:var(--amber-ink);border-color:#F3D7A2}
+@keyframes stp{0%,10%,100%{transform:none;box-shadow:none}4%{transform:scale(1.18);box-shadow:0 4px 10px rgba(11,31,77,.3);border-color:var(--navy)}}
+.stg-n{display:flex;align-items:baseline;gap:8px}
+.stg-n b{font-size:34px;font-weight:800;letter-spacing:-.03em;color:var(--orange);line-height:1}
+.stg-n span{font-size:12.5px;color:var(--body)}
+.stg-k{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--body)}
+.stg-k i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--sky)}
+.stg-k i.m{background:var(--amber-bg);border:1px solid #F3D7A2}
+.gbars{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.gb{display:grid;grid-template-columns:minmax(150px,1.1fr) minmax(0,2.4fr) minmax(0,2fr);gap:6px 16px;align-items:center;font-size:13.5px}
+.gb .nm{font-weight:800}
+.gb .tr{height:14px;background:var(--mist);border-radius:7px;overflow:hidden}
+.gb .tr i{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,var(--base),var(--base-2));border-radius:7px}
+.gbars.amb .gb .tr i{background:linear-gradient(90deg,var(--amber),#FFC869)}
+.gb .ds{color:var(--muted);font-size:12.5px}
+.gb .nm b{display:inline-block;min-width:30px;font:800 15px var(--font);color:var(--base);margin-right:6px}
+.gbars.amb .gb .nm b{color:var(--amber-ink)}
+.minis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.minis .fact b{font-size:28px}
+@media (max-width:1100px){.minis{grid-template-columns:repeat(2,minmax(0,1fr))}.gb{grid-template-columns:1fr}}
+@media (max-width:720px){.minis{grid-template-columns:1fr}.mbg{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){.mbg span,.stgr span,.s3 .ln3{animation:none}}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:1100px){
+  .hero-in{grid-template-columns:1fr;padding-block:34px 36px}
+  .rail,.jr{flex-direction:column;align-items:stretch}
+  .col,.col.fan{flex:none}
+  .col.fan{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px}
+  .fo .conn{display:none}
+  .rail>.conn,.jr>.conn{flex:0 0 30px;width:18px;height:30px;align-self:center}
+  .rail>.conn::before,.jr>.conn::before{left:8px;right:auto;top:0;bottom:8px;width:2px;height:auto;
+    background:repeating-linear-gradient(180deg,var(--c) 0 6px,transparent 6px 11px);background-size:2px 11px;animation:dashv .7s linear infinite}
+  .rail>.conn::after,.jr>.conn::after{left:3px;right:auto;top:auto;bottom:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid var(--c);border-bottom:0;
+    animation:nudgev 1.2s ease-in-out infinite;animation-delay:calc(var(--i,0) * .15s)}
+  .jr>.conn{--c:var(--base)}
+  .nd.stn{flex-direction:row;align-items:center;gap:12px}
+  .sils,.facts,.outs,.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .qs.wide{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wb-body{grid-template-columns:1fr}
+  .mhead{display:none}
+  .mrow{display:block}
+  .mrow>div{border-left:0;border-top:1px solid var(--line)}
+  .mrow>.mobj{border-top:0}
+  .cell::before{content:attr(data-label);display:block;font:700 11px/1.2 var(--font);letter-spacing:.05em;text-transform:uppercase;color:var(--c);margin-bottom:5px}
+  .stage{grid-template-columns:1fr 1fr}
+  .stage .sn{grid-column:1 / -1}
+}
+@media (max-width:720px){
+  .sils,.facts,.outs,.kpis,.qs,.qs.wide{grid-template-columns:1fr}
+  .tab small{display:none}
+  .tab{padding:8px 10px;gap:8px}
+  .tab .n{width:28px;height:28px;font-size:13px}
+  .tab b{font-size:13.5px}
+  .ba-h{display:none}
+  .ba-r{grid-template-columns:1fr;gap:8px}
+  .ba-r .arr{display:none}
+  .fhead{display:none}
+  .frow{grid-template-columns:1fr 1fr}
+  .frow .fex{grid-column:1 / -1}
+  .stage{grid-template-columns:1fr}
+  .panel{padding-block:32px 56px}
+  .msg{padding:22px 20px}
+  .jrow{flex-wrap:wrap;row-gap:4px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hc::before,.hc::after,.conn::before,.conn::after,.vconn::before,.vconn::after,.rec-r,.s3 .ln,.s3 .q{animation:none}
+  .rec-r{opacity:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .nd,.tab,.nextbtn{transition:background .15s ease,border-color .15s ease,color .15s ease,transform .15s ease}
+  .nd:hover{transform:translateY(-2px)}
+}
+</style>
+</head>
+<body>
+
+
+<header class="hero">
+  <div class="wrap hero-in">
+    <div>
+      <span class="kicker">Đề xuất cho VJSC</span>
+      <h1>Từ hòm thư đến hợp đồng<em>trên một hệ thống Sales dùng mỗi ngày</em></h1>
+      <p class="lead">Hôm nay VJSC vận hành bằng 88 automation nối CRM với Workflow, và phần lớn việc của hệ thống là ghi dữ liệu. Ba phần dưới đây trình bày hiện trạng, mục tiêu và cách Base 2.0 giúp đội Sales vận hành.</p>
+      <div class="hpills">
+        <span><b>3</b> dịch vụ</span>
+        <span><b>4</b> object Base CRM</span>
+        <span><b>88</b> automation hiện có</span>
+      </div>
+    </div>
+    <div class="jcard">
+      <small>MỘT LEAD ĐI QUA BỐN OBJECT</small>
+      <div class="jrow">
+        <div class="jp shared">Lead</div>
+        <span class="hc" aria-hidden="true" style="--i:0"></span>
+        <div class="jp stack shared"><span>Account</span><span>Contact</span></div>
+        <span class="hc" aria-hidden="true" style="--i:1"></span>
+        <div class="jp dk">Deal</div>
+        <span class="hc" aria-hidden="true" style="--i:2"></span>
+        <div class="jp job">Job</div>
+      </div>
+      <div class="jsv">
+        <span class="charter">Charter</span>
+        <span class="xtdl">Truyền thông &amp; XTDL</span>
+        <span class="tour">Lữ hành</span>
+      </div>
+      <p class="jcap">Job nằm ở Workflow, nhận bàn giao khi Deal Won.</p>
+    </div>
+  </div>
+</header>
+
+<div class="tabbar">
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="Ba phần của bản trình bày">
+      <button class="tab" role="tab" id="t-hien-trang" data-tab="hien-trang" aria-selected="true" aria-controls="p-hien-trang"><span class="n">01</span><span><b>Hiện trạng</b><small>Hôm nay VJSC đang ở đâu</small></span></button>
+      <button class="tab" role="tab" id="t-muc-tieu" data-tab="muc-tieu" aria-selected="false" aria-controls="p-muc-tieu"><span class="n">02</span><span><b>Mục tiêu</b><small>VJSC sẽ đi đến đâu</small></span></button>
+      <button class="tab" role="tab" id="t-how" data-tab="how" aria-selected="false" aria-controls="p-how"><span class="n">03</span><span><b>How</b><small>Làm bằng cách nào</small></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= 01 HIỆN TRẠNG ======================= -->
+<section class="panel" id="p-hien-trang" role="tabpanel" aria-labelledby="t-hien-trang">
+  <div class="wrap">
+    <div class="ch-head">
+      <span class="ch-label"><span class="no">01</span>Hiện trạng<span class="t">· Hôm nay</span></span>
+      <h2>Hệ thống làm được nhiều việc, nhưng phần lớn là automation viết tay.</h2>
+      <p class="idea">Số liệu dưới đây lấy từ <b>khảo sát cấu hình Automations của VJSC ngày 09/11/2026</b>. Chúng tôi chỉ đọc cấu hình, không chạy thử luồng nào.</p>
+    </div>
+
+    <div class="sils">
+      <article class="sil">
+        <div class="sv">
+          <div class="mbx">
+            <div class="mbx-h"><span>Trigger: email mới</span><em>12 luồng</em></div>
+            <div class="mbg">
+              <span style="--k:0">Hộp thư 1</span><span style="--k:1">Hộp thư 2</span><span style="--k:2">Hộp thư 3</span><span style="--k:3">Hộp thư 4</span>
+              <span style="--k:4">Hộp thư 5</span><span style="--k:5">Hộp thư 6</span><span style="--k:6">Hộp thư 7</span><span style="--k:7">Hộp thư 8</span>
+              <span style="--k:8">Hộp thư 9</span><span style="--k:9">Hộp thư 10</span><span style="--k:10">Hộp thư 11</span><span style="--k:11">Hộp thư 12</span>
+            </div>
+            <span class="vconn" aria-hidden="true"></span>
+            <div class="mbx-b">Tạo thương vụ hoặc nhiệm vụ<small>12 luồng có cấu trúc giống hệt nhau</small></div>
+          </div>
+        </div>
+        <div class="cp">
+          <span class="st ok">SỐ LIỆU TỪ CẤU HÌNH</span>
+          <b>Mỗi hộp thư một luồng, 12 luồng giống hệt nhau</b>
+          <span class="d">Sửa một quy tắc nhận thư là phải sửa 12 chỗ, và dễ lệch nhau theo thời gian.</span>
+        </div>
+      </article>
+
+      <article class="sil">
+        <div class="sv">
+          <svg class="s3" viewBox="0 0 320 290" role="img" aria-label="487 node HTTP nối CRM và Workflow">
+            <text class="big" x="160" y="26" text-anchor="middle" style="fill:#E2701A">487 node HTTP viết tay</text>
+            <rect class="bx" x="8" y="52" width="92" height="190" rx="14" style="stroke:#1468E0"/>
+            <text class="tx" x="54" y="140" text-anchor="middle" style="fill:#1468E0">CRM</text>
+            <text class="tx2" x="54" y="158" text-anchor="middle">Deal chuyển giai đoạn</text>
+            <rect class="bx" x="220" y="52" width="92" height="190" rx="14" style="stroke:#0F8A5F"/>
+            <text class="tx" x="266" y="140" text-anchor="middle" style="fill:#0F8A5F">Workflow</text>
+            <text class="tx2" x="266" y="158" text-anchor="middle">Job, bước xử lý</text>
+            <path class="ln3" d="M100 92 L220 92"/><text class="lb" x="160" y="84" text-anchor="middle">job/next · 251</text>
+            <path class="ln3" d="M100 132 L220 132"/><text class="lb" x="160" y="124" text-anchor="middle">job/edit · 146</text>
+            <path class="ln3" d="M100 172 L220 172"/><text class="lb" x="160" y="164" text-anchor="middle">job/create · 25</text>
+            <path class="ln3" d="M100 212 L220 212"/><text class="lb" x="160" y="204" text-anchor="middle">job/fail · 23</text>
+            <text class="tx2" x="160" y="270" text-anchor="middle">Còn lại: job/back 5, đọc Account, sửa trạng thái Deal</text>
+          </svg>
+        </div>
+        <div class="cp">
+          <span class="st ok">SỐ LIỆU TỪ CẤU HÌNH</span>
+          <b>Gần như mọi lần chuyển trạng thái CRM ↔ Workflow là một node HTTP</b>
+          <span class="d">Cả 487 node đều chứa thông tin truy cập gán cứng, và chỉ có 3 giá trị khác nhau. Đổi một giá trị là hỏng hàng trăm node cùng lúc.</span>
+        </div>
+      </article>
+
+      <article class="sil">
+        <div class="sv">
+          <div class="stg">
+            <div class="stg-h"><span>Pipeline 1.2 Japan Outbound</span><em>19 giai đoạn</em></div>
+            <div class="stgr">
+              <span style="--k:0">1</span><span class="m" style="--k:1">2</span><span class="m" style="--k:2">3</span><span class="m" style="--k:3">4</span><span class="m" style="--k:4">5</span>
+              <span style="--k:5">6</span><span class="m" style="--k:6">7</span><span style="--k:7">8</span><span style="--k:8">9</span><span class="m" style="--k:9">10</span>
+              <span class="m" style="--k:10">11</span><span style="--k:11">12</span><span style="--k:12">13</span><span style="--k:13">14</span><span class="m" style="--k:14">15</span>
+              <span style="--k:15">16</span><span style="--k:16">17</span><span class="m" style="--k:17">18</span><span class="m" style="--k:18">19</span>
+            </div>
+            <div class="stg-n"><b>10/19</b><span>giai đoạn chỉ để kích hoạt automation rồi được kéo tiếp</span></div>
+            <div class="stg-k"><span><i class="m"></i>Giai đoạn máy</span><span><i></i>Giai đoạn của người, của khách</span></div>
+          </div>
+        </div>
+        <div class="cp">
+          <span class="st ok">SỐ LIỆU TỪ CẤU HÌNH</span>
+          <b>Hơn một nửa giai đoạn là “giai đoạn máy”</b>
+          <span class="d">Tên giai đoạn có chữ “(Nội bộ) Tự động …”. Thương vụ đi qua rất nhanh, nên bảng pipeline Sales nhìn thấy không phản ánh đúng tiến độ thật.</span>
+        </div>
+      </article>
+    </div>
+    <p class="scap">Nguồn: khảo sát trang Automations của vjsc.base.vn ngày 09/11/2026. Hộp thư trong hình là minh họa cho số lượng luồng, không phải tên hộp thư thật.</p>
+
+    <h3 class="sh"><span class="k">QUY MÔ</span>Hệ thống automation hiện có</h3>
+    <p class="shi">Bốn con số tóm tắt mức độ phức tạp của hệ thống hôm nay.</p>
+    <div class="facts">
+      <div class="fact key"><b>88</b><span>automation: 77 đang bật, 11 đã tắt</span></div>
+      <div class="fact"><b>1.840</b><span>node trong toàn bộ các luồng</span></div>
+      <div class="fact"><b>487</b><span>node HTTP gọi Workflow và Sales bằng tay</span></div>
+      <div class="fact"><b>27</b><span>luồng có cấu trúc giống hệt luồng khác</span></div>
+    </div>
+
+    <h3 class="sh"><span class="k">5 NHÓM</span>88 automation chia theo việc chúng làm</h3>
+    <p class="shi">Phân nhóm dựa trên loại trigger và loại hành động trong cấu hình, không dựa vào tên luồng vì hầu hết luồng không có mô tả.</p>
+    <div class="gbars" id="grp-bars"></div>
+    <p class="scap">Nhóm A kích hoạt bằng webhook nên số liệu dựa trên cấu trúc node, nội dung từng luồng chưa được đọc.</p>
+
+    <h3 class="sh"><span class="k">PIPELINE 1.2</span>Một pipeline, ba luồng, 114 lần ghi trường</h3>
+    <p class="shi">Chuỗi điều khiển pipeline Japan Outbound gồm 3 luồng, 161 node và 22 to-do tự tạo. Điểm đáng chú ý là phần lớn việc ghi trường không phải dữ liệu nghiệp vụ mà là trường trung gian.</p>
+    <div class="minis">
+      <div class="fact"><b>161</b><span>node trong 3 luồng cùng trigger “Deal chuyển giai đoạn”</span></div>
+      <div class="fact"><b>114</b><span>lần ghi trường trên 42 trường khác nhau</span></div>
+      <div class="fact"><b>22</b><span>to-do tự tạo cho từng giai đoạn</span></div>
+      <div class="fact"><b>4</b><span>job Workflow được tạo từ chuỗi này</span></div>
+    </div>
+    <div class="gbars amb" id="wr-bars"></div>
+    <p class="scap">Ví dụ: mã tour được ghép nhiều lần, ở nhiều nhánh, từ các trường mảnh ghép. Bộ đếm “Số lần qua bước N” có để chống chạy lặp khi thương vụ bị kéo lùi.</p>
+
+    <div class="msg">
+      <small>THÔNG ĐIỆP</small>
+      <p>Hôm nay <em>automation làm thay phần việc của pipeline</em>: ghi trường, kéo giai đoạn, nối Workflow bằng tay. VJSC cần để <em>Sales làm trên pipeline thật</em>, còn automation chỉ liên kết.</p>
+    </div>
+    <div class="nextbar">
+      <p>Đó là hôm nay. Vậy VJSC sẽ đi đến đâu?</p>
+      <button class="nextbtn" type="button" data-go="muc-tieu">Sang phần 02 · Mục tiêu <span class="hc" aria-hidden="true"></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 02 MỤC TIÊU ======================= -->
+<section class="panel" id="p-muc-tieu" role="tabpanel" aria-labelledby="t-muc-tieu" hidden>
+  <div class="wrap">
+    <div class="ch-head">
+      <span class="ch-label"><span class="no">02</span>Mục tiêu<span class="t">· Sales có bàn làm việc</span></span>
+      <h2>Hệ thống trở thành bàn làm việc của Sales.</h2>
+      <p class="idea">Bốn đầu ra mà <b>Sales và quản lý nhìn thấy ngay</b> khi mở hệ thống, thay vì phải đoán tiến độ qua các giai đoạn máy.</p>
+    </div>
+
+    <div class="outs">
+      <div class="oc hl"><span class="no">1</span><h4>Mọi lead có chủ</h4><p>Mỗi thư thành một Lead, được phân loại theo dịch vụ và giao cho một người phụ trách.</p></div>
+      <div class="oc"><span class="no">2</span><h4>Một khách, một hồ sơ</h4><p>Account và Contact dùng chung cho cả ba dịch vụ. Một tỉnh mua nhiều dịch vụ vẫn chỉ có một hồ sơ.</p></div>
+      <div class="oc hl"><span class="no">3</span><h4>Mỗi dịch vụ một pipeline</h4><p>Deal đi qua các stage rõ ràng. Mỗi stage có điều kiện để sang bước sau và việc cần làm.</p></div>
+      <div class="oc"><span class="no">4</span><h4>Won là bàn giao đủ thông tin</h4><p>Thông tin hợp đồng nằm trên Deal. Job ở Workflow được tạo ra mang theo đủ dữ liệu, vận hành không hỏi lại khách.</p></div>
+    </div>
+
+    <h3 class="sh"><span class="k">TRƯỚC · SAU</span>Từ hôm nay đến Base 2.0</h3>
+    <p class="shi">Cột trái là hiện trạng, mỗi dòng ghi rõ đã xác nhận hay còn cần xác nhận với VJSC.</p>
+    <div class="ba" id="ba"></div>
+
+    <h3 class="sh"><span class="k">MINH HỌA</span>Bàn làm việc của Sales</h3>
+    <p class="shi">Mở hệ thống là thấy việc hôm nay và cơ hội đang ở đâu. Thẻ Deal được tô xanh di chuyển qua các stage khi Sales cập nhật.</p>
+    <div class="wb">
+      <div class="wb-top"><i></i><i></i><i></i><span>Bàn làm việc của Sales · Charter</span><em>DỮ LIỆU MINH HỌA</em></div>
+      <div class="wb-body">
+        <div>
+          <h4>Việc hôm nay</h4>
+          <ul class="tasks">
+            <li class="charter"><span class="tg">LEAD MỚI</span>Liên hệ lần đầu: thư hỏi charter Hà Nội – Okayama</li>
+            <li class="charter"><span class="tg">ĐẾN HẠN</span>Nhắc đối tác phản hồi báo giá Okayama</li>
+            <li class="xtdl"><span class="tg">GIA HẠN</span>Hợp đồng xúc tiến Fukushima sắp hết hạn</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pipeline Phát triển đối tác Charter</h4>
+          <div class="kbw">
+            <div class="kb" id="kb">
+              <div class="kcol"><small>Tìm hiểu nhu cầu</small><div class="kmini">Kagawa – Hà Nội</div></div>
+              <div class="kcol"><small>Làm việc với hãng bay</small><div class="kmini">Fukushima – Tân Sơn Nhất</div></div>
+              <div class="kcol"><small>Báo giá và đàm phán</small></div>
+              <div class="kcol"><small>Chờ phê duyệt</small></div>
+              <div class="kcard" id="kcard"><b>Okayama – Hà Nội · Xuân 2027</b><span>Đang di chuyển qua stage</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sh"><span class="k">ĐO LƯỜNG</span>Chỉ số đề xuất để theo dõi</h3>
+    <p class="shi">Các chỉ số này đo được ngay từ dữ liệu trên Base. Mức mục tiêu cho từng chỉ số sẽ đặt cùng VJSC.</p>
+    <div class="kpis">
+      <div class="kpi">Lead được liên hệ đúng hạn<small>theo từng Sales, từng dịch vụ</small></div>
+      <div class="kpi">Số Deal ở mỗi stage<small>thấy nghẽn ở bước nào</small></div>
+      <div class="kpi">Tỷ lệ Lead → Deal → Won<small>theo dịch vụ và theo nguồn</small></div>
+      <div class="kpi">Hợp đồng gia hạn đúng hạn<small>cho dịch vụ truyền thông và xúc tiến</small></div>
+    </div>
+
+    <div class="msg">
+      <small>THÔNG ĐIỆP</small>
+      <p>Bốn đầu ra: <em>lead có chủ, khách có một hồ sơ, deal có bước, hợp đồng bàn giao đủ thông tin.</em> Tất cả trên một hệ thống Sales dùng mỗi ngày.</p>
+    </div>
+    <div class="nextbar">
+      <p>Đó là đích đến. Vậy làm bằng cách nào?</p>
+      <button class="nextbtn" type="button" data-go="how">Sang phần 03 · How <span class="hc" aria-hidden="true"></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 03 HOW ======================= -->
+<section class="panel" id="p-how" role="tabpanel" aria-labelledby="t-how" hidden>
+  <div class="wrap">
+    <div class="ch-head">
+      <span class="ch-label"><span class="no">03</span>How<span class="t">· Cách cấu hình trên Base 2.0</span></span>
+      <h2>Bốn object của Base CRM, một hành trình, ba pipeline.</h2>
+      <p class="idea">Năm phần: object, hành trình khách hàng, pipeline, trường thông tin và những điều cần chốt cùng VJSC.</p>
+    </div>
+    <div class="subnav" id="subnav">
+      <button type="button" data-to="h-object">Object</button>
+      <button type="button" data-to="h-journey">Hành trình</button>
+      <button type="button" data-to="h-pipe">Pipeline</button>
+      <button type="button" data-to="h-fields">Trường thông tin</button>
+      <button type="button" data-to="h-decide">Điều cần chốt</button>
+    </div>
+
+    <!-- object -->
+    <h3 class="sh anch" id="h-object"><span class="k">OBJECT</span>Bốn object và cách chúng nối với nhau</h3>
+    <p class="shi">Lead là điểm vào. Khi đủ điều kiện, Lead chuyển thành Account, Contact và Deal. Deal đi qua pipeline của dịch vụ, và khi Won thì vận hành chuyển sang Job ở Workflow.</p>
+    <div class="rail objmap" role="group" aria-label="Luồng giữa các object">
+      <div class="nd obj shared"><b>Lead</b><span>Một thư hoặc yêu cầu đầu vào, chưa xác nhận là cơ hội.</span></div>
+      <span class="conn" aria-hidden="true" style="--i:0"></span>
+      <div class="col">
+        <div class="nd obj shared"><b>Account</b><span>Tổ chức đối tác hoặc khách hàng.</span></div>
+        <div class="nd obj shared"><b>Contact</b><span>Người liên hệ cụ thể.</span></div>
+      </div>
+      <span class="conn" aria-hidden="true" style="--i:1"></span>
+      <div class="nd obj deal"><b>Deal</b><span>Cơ hội đi qua pipeline của dịch vụ. Thông tin hợp đồng là một nhóm trường trên Deal.</span></div>
+      <span class="conn" aria-hidden="true" style="--i:2"></span>
+      <div class="nd obj dash shared"><b>Job (Workflow)</b><span>Vận hành sau khi Won. Nằm ngoài Base CRM.</span></div>
+    </div>
+    <div class="rail ex2 objmap">
+      <div class="nd obj shared"><b>Ví dụ: Account Tỉnh Fukushima</b><span>Một bản ghi duy nhất. Dịch vụ đang dùng: Charter, Truyền thông và XTDL.</span></div>
+      <span class="conn" aria-hidden="true" style="--i:0"></span>
+      <div class="col">
+        <div class="nd obj charter"><b>Deal Charter</b><span>Fukushima – Tân Sơn Nhất · mùa xuân</span></div>
+        <div class="nd obj xtdl"><b>Deal Truyền thông &amp; XTDL</b><span>Fukushima · Xúc tiến tại Việt Nam năm 2027</span></div>
+      </div>
+    </div>
+    <p class="scap">Ví dụ minh họa cho cách tổ chức dữ liệu, không phải dữ liệu thật của VJSC.</p>
+    <div id="matrix"></div>
+    <div class="keep"><b>Hợp đồng không phải một object riêng.</b> Base CRM có bốn object, nên thông tin hợp đồng (số hợp đồng, ngày ký, giá trị, lịch thanh toán, file) được gom thành một nhóm trường trên Deal, điền khi Deal Won.</div>
+
+    <!-- journey -->
+    <h3 class="sh anch" id="h-journey"><span class="k">HÀNH TRÌNH</span>Từ lead đến sau dịch vụ, tám điểm dừng</h3>
+    <p class="shi">Bước tô đậm là nơi Base 2.0 thay đổi cách làm việc của Sales. Bước 6 tô vàng là lúc cơ hội thành hợp đồng và chuyển sang vận hành.</p>
+    <div class="jr">
+      <div class="nd jn first"><span class="num">1</span><b>Thư vào hòm thư chung</b><div class="who"><span>Điều phối lead</span><span class="ob">Lead</span></div><p>Mỗi thư thành một Lead: kênh, người gửi, ngôn ngữ, nội dung.</p></div>
+      <span class="conn" aria-hidden="true" style="--i:0"></span>
+      <div class="nd jn hl"><span class="num">2</span><b>Phân loại và giao việc</b><div class="who"><span>Điều phối lead</span><span class="ob">Lead</span></div><p>Chọn dịch vụ, kiểm tra trùng, gán Sales phụ trách.</p></div>
+      <span class="conn" aria-hidden="true" style="--i:1"></span>
+      <div class="nd jn"><span class="num">3</span><b>Liên hệ và làm rõ nhu cầu</b><div class="who"><span>Sales</span><span class="ob">Lead</span></div><p>Ghi kết quả liên hệ. Chuyển thành cơ hội hoặc đóng Lead kèm lý do.</p></div>
+      <span class="conn" aria-hidden="true" style="--i:2"></span>
+      <div class="nd jn"><span class="num">4</span><b>Tạo Account, Contact, Deal</b><div class="who"><span>Sales</span><span class="ob">Account</span><span class="ob">Contact</span><span class="ob">Deal</span></div><p>Gắn vào Account sẵn có nếu tổ chức đã là khách.</p></div>
+    </div>
+    <div class="jgap"><span class="vconn" aria-hidden="true"></span><span>Deal bước vào pipeline của dịch vụ</span></div>
+    <div class="jr">
+      <div class="nd jn hl"><span class="num">5</span><b>Đi qua pipeline</b><div class="who"><span>Sales</span><span class="ob">Deal</span></div><p>Mỗi stage có điều kiện để sang bước sau và việc cần làm tiếp theo.</p></div>
+      <span class="conn" aria-hidden="true" style="--i:0"></span>
+      <div class="nd jn key"><span class="num">6</span><b>Won và nhóm trường hợp đồng</b><div class="who"><span>Sales</span><span>Kế toán / Hành chính</span><span class="ob">Deal</span></div><p>Điền thông tin hợp đồng ngay trên Deal.</p></div>
+      <span class="conn" aria-hidden="true" style="--i:1"></span>
+      <div class="nd jn"><span class="num">7</span><b>Bàn giao Job</b><div class="who"><span>Vận hành</span><span class="ob">Workflow</span></div><p>Job mang đủ thông tin, vận hành không hỏi lại khách.</p></div>
+      <span class="conn" aria-hidden="true" style="--i:2"></span>
+      <div class="nd jn"><span class="num">8</span><b>Sau dịch vụ và hẹn lại</b><div class="who"><span>Sales</span><span class="ob">Account</span><span class="ob">Deal</span></div><p>Nhắc gia hạn, mùa bay sau, khách quay lại và giới thiệu.</p></div>
+    </div>
+    <div class="jnote">
+      <span class="l1">Bước 2 và 5: thay đổi lớn nhất với Sales</span>
+      <span class="l2">Bước 6: cơ hội thành hợp đồng</span>
+      <span class="l3">Lead không phù hợp hoặc Deal Lost: giữ Account và Contact, ghi lý do, hẹn tiếp cận lại</span>
+    </div>
+
+    <!-- pipeline -->
+    <h3 class="sh anch" id="h-pipe"><span class="k">PIPELINE</span>Pipeline mẫu cho từng dịch vụ</h3>
+    <p class="shi">Deal đi từ trái sang phải. Stage cuối (tô đậm) là Won, từ đó kết quả rẽ ra các nhánh bên phải. Dịch vụ truyền thông có hai pipeline vì gia hạn hằng năm là một dòng doanh thu riêng.</p>
+    <div class="legend"><span>Mũi tên chuyển động chỉ chiều đi của Deal.</span><span>Bấm “Xem điều kiện và việc cần làm” dưới mỗi pipeline để đọc chi tiết từng stage.</span></div>
+    <div id="pipe-all"></div>
+
+    <!-- fields -->
+    <h3 class="sh anch" id="h-fields"><span class="k">TRƯỜNG THÔNG TIN</span>Trường cần quản lý ở mỗi object</h3>
+    <p class="shi">Danh sách đề xuất khởi điểm, kèm kiểu dữ liệu và ví dụ. Nên bắt đầu với 4 đến 5 trường bắt buộc rồi tăng dần theo thực tế dùng.</p>
+    <details class="fdet shared">
+      <summary>Lead, Account, Contact: ba object dùng chung</summary>
+      <div id="shared-units"></div>
+    </details>
+    <details class="fdet" open>
+      <summary>Deal theo dịch vụ, gồm nhóm trường hợp đồng</summary>
+      <div class="seg" id="seg-unit" role="group" aria-label="Chọn dịch vụ"></div>
+      <div id="svc-units"></div>
+    </details>
+
+    <!-- decisions -->
+    <h3 class="sh anch" id="h-decide"><span class="k">ĐIỀU CẦN CHỐT</span>Sáu quyết định cùng VJSC</h3>
+    <p class="shi">Bản cấu hình dựa trên các giả định dưới đây. Mỗi điểm đổi đáp án thì object, stage hoặc trường ở trên sẽ đổi theo.</p>
+    <div class="qs wide" id="qs-dec"></div>
+
+    <div class="endcard">
+      <div>
+        <small>BƯỚC TIẾP THEO</small>
+        <h4>Chốt sáu quyết định để cấu hình đúng ngay lần đầu</h4>
+        <p>Cùng VJSC xác nhận các điểm trên và các câu hỏi ở phần Hiện trạng.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");};
+  var $=function(id){return document.getElementById(id);};
+
+  var SV=[
+    {id:"charter",name:"Charter",full:"Charter (chuyến bay thuê bao)",sub:"Đối tác Nhật, hãng bay"},
+    {id:"xtdl",name:"Truyền thông & XTDL",full:"Truyền thông và Xúc tiến du lịch",sub:"Tỉnh và tổ chức du lịch Nhật"},
+    {id:"tour",name:"Lữ hành / bán tour",full:"Lữ hành / bán tour",sub:"Khách đoàn, khách lẻ"}
+  ];
+  var svc="charter";
+
+  /* ---------- Mapping ---------- */
+  var MAP=[
+    {o:"Lead",def:"Một yêu cầu đầu vào, chưa xác nhận là cơ hội.",
+     all:{t:"Một thư vào hòm thư chung, chưa biết thuộc dịch vụ nào. Điều phối chọn dịch vụ quan tâm rồi giao Sales.",e:"Trường chính: Dịch vụ quan tâm"},
+     charter:{t:"Thư hoặc công văn hỏi về chuyến bay thuê bao: tuyến, mùa, hãng.",e:"Hỏi charter Hà Nội – Okayama, xuân 2027"},
+     xtdl:{t:"Thư mời hợp tác hoặc hỏi gói xúc tiến từ tỉnh, tổ chức Nhật.",e:"Mời đề xuất xúc tiến du lịch năm 2027"},
+     tour:{t:"Yêu cầu hỏi hoặc đặt tour của khách lẻ hoặc đoàn.",e:"Hỏi tour Fukushima 5N4Đ cho 6 người"}},
+    {o:"Account",def:"Một tổ chức hoặc doanh nghiệp.",
+     all:{t:"Một tổ chức, tạo một lần, dùng cho mọi dịch vụ. Trường Dịch vụ đang dùng cho biết tổ chức mua gì của VJSC.",e:"Một Account, nhiều Deal"},
+     charter:{t:"Tỉnh hoặc thành phố Nhật, cơ quan xúc tiến (JNTO, Đại sứ quán), hãng hàng không, đại lý đối tác.",e:"Văn phòng Du lịch tỉnh Okayama"},
+     xtdl:{t:"Tỉnh hoặc tổ chức Nhật mua dịch vụ truyền thông. Có thể trùng với đối tác Charter.",e:"Tỉnh Fukushima (VJSC đại diện quảng bá từ 2016)"},
+     tour:{t:"Công ty, trường học, đoàn thể đặt đoàn. Khách lẻ không có Account.",e:"Công ty ABC · đoàn khen thưởng"}},
+    {o:"Contact",def:"Một người liên hệ cụ thể.",
+     all:{t:"Một người, có ngôn ngữ làm việc và vai trò trong quyết định. Khách lẻ chỉ có Contact.",e:"Trường chính: Ngôn ngữ làm việc"},
+     charter:{t:"Cán bộ xúc tiến của tỉnh, đại diện hãng bay.",e:"Trưởng nhóm Xúc tiến Du lịch quốc tế"},
+     xtdl:{t:"Cán bộ marketing, du lịch của tỉnh và người duyệt ngân sách.",e:"Người ra quyết định ngân sách"},
+     tour:{t:"Người đặt tour, trưởng đoàn, khách cũ giới thiệu.",e:"Nguyễn Minh Anh · khách lẻ"}},
+    {o:"Deal",def:"Một cơ hội bán hàng đang đi qua pipeline.",
+     all:{t:"Một cơ hội đi qua pipeline. Khi Won thì điền nhóm trường hợp đồng và tạo Job. Mỗi dịch vụ có pipeline riêng.",e:"Trường chính: Stage"},
+     charter:{t:"Một tuyến, một mùa, một đối tác. Pipeline Phát triển đối tác Charter, 6 stage.",e:"Okayama – Hà Nội · Xuân 2027"},
+     xtdl:{t:"Một hợp đồng xúc tiến theo kỳ, mới hoặc gia hạn. Hai pipeline: 6 stage và 5 stage.",e:"Fukushima · Xúc tiến VN 2027"},
+     tour:{t:"Một booking tour. Pipeline Bán tour, 5 stage.",e:"Nguyễn Minh Anh · Fukushima 5N4Đ"}}
+  ];
+
+  /* ---------- Trường dữ liệu: [tên trường, kiểu, ví dụ] ---------- */
+  var SHARED=[
+    {name:"Lead",desc:"Một yêu cầu đầu vào, thường là một thư vào hòm thư chung. Dùng chung cho cả ba dịch vụ để điều phối viên chỉ làm việc ở một chỗ.",
+     f:[
+      ["Thời điểm nhận","Ngày giờ (tự động)","11/11/2026 09:12"],
+      ["Kênh nhận","Chọn một","Hòm thư chung · Điện thoại · Giới thiệu · Sự kiện"],
+      ["Người gửi","Văn bản","Tanaka Hiroshi"],
+      ["Tổ chức","Văn bản","Văn phòng Du lịch tỉnh Okayama"],
+      ["Email","Email","contact@example.jp"],
+      ["Ngôn ngữ","Chọn một","Tiếng Việt · 日本語 · English"],
+      ["Nội dung thư","Văn bản dài","Hỏi về chuyến charter Hà Nội – Okayama mùa xuân 2027"],
+      ["Dịch vụ quan tâm","Chọn một","Charter · Truyền thông & XTDL · Lữ hành · Chưa rõ"],
+      ["Người phụ trách","Người dùng","Sales Charter"],
+      ["Trạng thái","Chọn một","Mới → Đang liên hệ → Đã chuyển thành cơ hội · Không phù hợp"],
+      ["Lý do không phù hợp","Chọn một","Ngoài phạm vi dịch vụ · Thư quảng cáo · Trùng lead cũ · Không phản hồi"]
+     ]},
+    {name:"Account",desc:"Một tổ chức hoặc doanh nghiệp, tạo một lần và dùng lại ở mọi dịch vụ. Ví dụ một tỉnh Nhật vừa là đối tác charter vừa là khách hàng truyền thông thì chỉ có một Account.",
+     f:[
+      ["Tên tổ chức","Văn bản","Văn phòng Du lịch tỉnh Fukushima / 福島県"],
+      ["Loại tổ chức","Chọn một","Tỉnh / thành phố Nhật · Cơ quan xúc tiến (JNTO, Đại sứ quán) · Hãng hàng không · Đại lý / tour operator · Doanh nghiệp · Trường học, đoàn thể"],
+      ["Quốc gia, tỉnh","Chọn","Nhật Bản · Fukushima"],
+      ["Dịch vụ đang dùng","Chọn nhiều","Charter, Truyền thông & XTDL"],
+      ["Năm bắt đầu hợp tác","Năm","2016"],
+      ["Tình trạng quan hệ","Chọn một","Mới · Đang hợp tác · Từng hợp tác · Tạm ngưng"],
+      ["Người phụ trách chính","Người dùng","Trưởng nhóm Sales"]
+     ]},
+    {name:"Contact",desc:"Một người cụ thể. Khách lẻ đặt tour chỉ có Contact, không cần Account.",
+     f:[
+      ["Họ tên","Văn bản","Tanaka Hiroshi / 田中 宏"],
+      ["Chức danh","Văn bản","Trưởng nhóm Xúc tiến du lịch quốc tế"],
+      ["Tổ chức","Liên kết Account (có thể trống)","Văn phòng Du lịch tỉnh Okayama"],
+      ["Email","Email","contact@example.jp"],
+      ["Điện thoại / Zalo","Số điện thoại","+81 ... · 09xx xxx xxx"],
+      ["Ngôn ngữ làm việc","Chọn một","Tiếng Việt · 日本語 · English"],
+      ["Vai trò trong quyết định","Chọn một","Người quyết định · Người ảnh hưởng · Đầu mối làm việc"],
+      ["Nguồn","Chọn một","Hòm thư · Khách cũ giới thiệu · Sự kiện · Hội thảo xúc tiến"],
+      ["Người giới thiệu","Liên kết Contact","Khách đã đi tour năm trước"]
+     ]}
+  ];
+
+  var UNITS={
+    charter:{
+      deal:{name:"Deal Charter",desc:"Một cơ hội bay cụ thể: một tuyến, một mùa, một đối tác. Đặt tên theo tuyến và mùa để nhìn danh sách là hiểu.",
+        groups:[
+          {title:"Thông tin cơ hội (dùng trong pipeline)",f:[
+            ["Tên cơ hội","Văn bản","Okayama – Hà Nội · Xuân 2027"],
+            ["Account, Contact đầu mối","Liên kết","Văn phòng Du lịch tỉnh Okayama · Tanaka Hiroshi"],
+            ["Tuyến bay","Hai sân bay","HAN ⇄ OKJ (các mã khác: SGN, DAD, FKS, IBR, TAK, OKA)"],
+            ["Hãng hàng không đề xuất","Chọn một","Vietnam Airlines · Vietjet Air · Jetstar Pacific · Bamboo Airways · Vietravel Airlines"],
+            ["Hình thức hợp tác","Chọn một","Thuê bao nguyên chuyến · Bán ghế · Khác"],
+            ["Số chuyến, khung ngày bay","Số + khoảng ngày","4 chuyến · 24/03 – 14/04/2027"],
+            ["Giá trị dự kiến","Tiền (VND hoặc JPY)","Theo báo giá hiện hành"],
+            ["Hạn phản hồi từ đối tác","Ngày","Dùng để sinh việc nhắc follow-up"],
+            ["Lý do thua","Chọn một","Giá · Hãng bay không có slot · Đối tác đổi kế hoạch · Chọn nhà cung cấp khác"]
+          ]},
+          {title:"Nhóm trường hợp đồng (điền khi Won)",f:[
+            ["Số hợp đồng","Văn bản","Theo quy ước đánh số của VJSC"],
+            ["Các bên ký","Văn bản hoặc liên kết","VJSC · Tỉnh Okayama · Hãng bay"],
+            ["Ngày ký, hiệu lực","Ngày, khoảng ngày","Từ ngày ký đến hết mùa bay"],
+            ["Giá trị chốt và tiền tệ","Tiền","Theo hợp đồng"],
+            ["Lịch thanh toán","Văn bản dài hoặc bảng","Đợt 1 khi ký · Đợt cuối sau chuyến bay cuối"],
+            ["File hợp đồng, phụ lục lịch bay","File","PDF đính kèm"],
+            ["Trạng thái hợp đồng","Chọn một","Nháp · Chờ ký · Đã ký · Đã quyết toán · Hết hiệu lực"]
+          ]}
+        ]},
+      handoff:["Tuyến bay","Hãng hàng không","Số chuyến và ngày bay","Hình thức hợp tác","Account và Contact đầu mối","Nhóm trường hợp đồng và phụ lục lịch bay"]
+    },
+    xtdl:{
+      deal:{name:"Deal Truyền thông & XTDL",desc:"Một hợp đồng xúc tiến theo kỳ, thường theo năm. Cùng một loại Deal dùng cho cơ hội mới và gia hạn, phân biệt bằng trường Loại.",
+        groups:[
+          {title:"Thông tin cơ hội (dùng trong pipeline)",f:[
+            ["Tên cơ hội","Văn bản","Fukushima · Xúc tiến tại Việt Nam năm 2027"],
+            ["Account, Contact đầu mối","Liên kết","Tỉnh Fukushima · Cán bộ marketing du lịch"],
+            ["Loại","Chọn một","Mới · Gia hạn"],
+            ["Kỳ hợp đồng","Khoảng ngày","01/04/2027 – 31/03/2028"],
+            ["Gói dịch vụ","Chọn nhiều","Quản lý kênh truyền thông · Sự kiện, hội chợ · Press trip, KOL · Ấn phẩm · Booth"],
+            ["Ngân sách đề xuất, ngân sách chốt","Tiền","Hai trường tách biệt để thấy mức đàm phán"],
+            ["Cách bên Nhật chọn nhà cung cấp","Chọn một","Chỉ định · Chào giá cạnh tranh · Đấu thầu"],
+            ["Hạn nộp đề xuất","Ngày","Sinh việc nhắc trước hạn"],
+            ["Người ra quyết định","Liên kết Contact","Trưởng phòng du lịch"],
+            ["Lý do thua","Chọn một","Ngân sách cắt giảm · Chọn đơn vị khác · Đổi chiến lược"]
+          ]},
+          {title:"Nhóm trường hợp đồng (điền khi Won)",f:[
+            ["Số hợp đồng","Văn bản","Theo quy ước đánh số của VJSC"],
+            ["Kỳ hiệu lực, ngày hết hạn","Khoảng ngày","01/04/2027 – 31/03/2028 (ngày hết hạn sinh Deal gia hạn)"],
+            ["Giá trị chốt","Tiền","Theo hợp đồng"],
+            ["Hạng mục và KPI cam kết","Văn bản dài","Số sự kiện · Số bài đăng · Lượt tiếp cận"],
+            ["Mốc thanh toán","Văn bản dài hoặc bảng","Theo tiến độ hợp đồng"],
+            ["Mốc nộp báo cáo","Ngày","Báo cáo quý, báo cáo cuối kỳ"],
+            ["File hợp đồng","File","PDF đính kèm"],
+            ["Trạng thái hợp đồng","Chọn một","Nháp · Chờ ký · Đang thực hiện · Đã nghiệm thu · Hết hạn"]
+          ]}
+        ]},
+      handoff:["Gói dịch vụ đã chốt","Kỳ hợp đồng","Hạng mục và KPI cam kết","Mốc nộp báo cáo","Account và Contact đầu mối","Ngân sách chốt"]
+    },
+    tour:{
+      deal:{name:"Deal Lữ hành (Booking tour)",desc:"Một yêu cầu đặt tour, cho khách lẻ hoặc một đoàn. Khách lẻ chỉ có Contact, đoàn có thêm Account.",
+        groups:[
+          {title:"Thông tin cơ hội (dùng trong pipeline)",f:[
+            ["Tên booking","Văn bản","Nguyễn Minh Anh · Fukushima 5 ngày 4 đêm"],
+            ["Contact, Account (nếu là đoàn)","Liên kết","Người đặt tour · Công ty đặt đoàn"],
+            ["Chương trình, điểm đến","Chọn + văn bản","Fukushima · Okayama · Takamatsu · Tour thiết kế riêng"],
+            ["Số khách","Số","Người lớn 4 · Trẻ em 2"],
+            ["Ngày khởi hành mong muốn","Khoảng ngày","Cuối tháng 3 đến đầu tháng 4"],
+            ["Ngân sách mỗi khách","Tiền","Khách cung cấp khi tư vấn"],
+            ["Dịch vụ đi kèm","Chọn nhiều","Visa · Vé máy bay · Khách sạn · Hướng dẫn viên"],
+            ["Yêu cầu đặc biệt","Văn bản dài","Ăn chay · Xe lăn · Lịch ngắm hoa anh đào"],
+            ["Giá báo, tiền cọc, hạn cọc","Tiền, ngày","Ba trường để theo dõi chốt tour"],
+            ["Lý do thua","Chọn một","Giá · Lịch không phù hợp · Chọn công ty khác · Không phản hồi"]
+          ]},
+          {title:"Nhóm trường hợp đồng (điền khi Won)",f:[
+            ["Số hợp đồng / đơn đặt tour","Văn bản","Theo quy ước đánh số của VJSC"],
+            ["Tổng giá trị","Tiền","Theo báo giá đã chốt"],
+            ["Lịch thanh toán","Văn bản dài hoặc bảng","Cọc · Thanh toán đủ trước ngày khởi hành"],
+            ["Chính sách hủy, đổi","Chọn một","Theo từng chương trình"],
+            ["File hợp đồng","File","PDF đính kèm"],
+            ["Trạng thái thanh toán","Chọn một","Đã cọc · Đã thanh toán đủ · Đã hủy · Đã hoàn thành"]
+          ]}
+        ]},
+      handoff:["Chương trình và điểm đến","Số khách (người lớn, trẻ em)","Ngày khởi hành","Dịch vụ đi kèm, đặc biệt là visa","Yêu cầu đặc biệt","Lịch thanh toán"]
+    }
+  };
+
+  /* ---------- Pipeline ---------- */
+  var PIPES={
+    charter:[{
+      name:"Phát triển đối tác Charter",
+      desc:"Từ lead đến hợp đồng với đối tác Nhật. Việc xin phép bay và chuẩn bị mặt đất thuộc Workflow, không nằm trong pipeline này.",
+      stages:[
+        {n:"Lead mới",goal:"Xác nhận có nhu cầu bay thật.",gate:"Đã gắn Account và Contact. Có tuyến và khung thời gian sơ bộ.",tasks:"Phản hồi đầu tiên. Gửi tài liệu giới thiệu các chuyến đã khai thác."},
+        {n:"Tìm hiểu nhu cầu",goal:"Nắm sân bay đi và đến, số chuyến, hình thức hợp tác.",gate:"Điền Tuyến bay, Số chuyến và khung ngày, Hình thức hợp tác.",tasks:"Họp hoặc gọi với đối tác. Ghi biên bản vào Deal."},
+        {n:"Làm việc với hãng bay",goal:"Kiểm tra khả năng có chỗ và mức giá từ hãng.",gate:"Chọn Hãng hàng không đề xuất. Đính kèm phản hồi của hãng.",tasks:"Gửi yêu cầu báo giá cho hãng. Theo dõi phản hồi."},
+        {n:"Báo giá và đàm phán",goal:"Thống nhất giá và điều khoản với đối tác.",gate:"Có Giá trị dự kiến, đã đính kèm báo giá, đặt Hạn phản hồi.",tasks:"Gửi báo giá. Việc nhắc follow-up sinh theo Hạn phản hồi."},
+        {n:"Chờ phê duyệt từ đối tác",goal:"Đối tác hoàn tất quy trình nội bộ để ký.",gate:"Có bản thỏa thuận nháp. Đã xác định Người ra quyết định.",tasks:"Nhắc đối tác định kỳ. Nhờ Kế toán, Hành chính chuẩn bị hợp đồng."},
+        {n:"Đàm phán HĐ",goal:"Thống nhất điều khoản và ký hợp đồng với đối tác.",gate:"Điền nhóm trường hợp đồng (số hợp đồng, ngày ký, giá trị chốt) và đính kèm file đã ký.",tasks:"Chỉnh sửa điều khoản cùng Kế toán, Hành chính. Cập nhật trạng thái hợp đồng."},
+        {n:"Tự động bắn sang Workflow",goal:"Deal Won tự tạo Job vận hành Charter, Sales không phải nhập lại.",gate:"Nhóm trường hợp đồng đã điền đủ.",tasks:"Automation tạo Job trong Workflow, mang theo dữ liệu của Deal."}
+      ],
+      outcomes:[{k:"won",t:"Won · tạo Job"},{k:"lost",t:"Lost · ghi lý do thua"},{k:"hold",t:"Tạm hoãn · hẹn mùa sau"}]
+    }],
+    xtdl:[{
+      name:"Hợp đồng xúc tiến (mới)",
+      desc:"Cho tỉnh hoặc tổ chức Nhật chưa có hợp đồng truyền thông với VJSC.",
+      stages:[
+        {n:"Lead mới",goal:"Xác nhận bên Nhật có nhu cầu quảng bá tại Việt Nam.",gate:"Đã gắn Account và Contact. Biết kỳ ngân sách.",tasks:"Phản hồi đầu tiên. Gửi hồ sơ năng lực truyền thông."},
+        {n:"Tìm hiểu mục tiêu, ngân sách",goal:"Hiểu mục tiêu xúc tiến, thị trường mục tiêu và mức ngân sách.",gate:"Điền Kỳ hợp đồng, Ngân sách đề xuất, Cách chọn nhà cung cấp.",tasks:"Họp tìm hiểu. Ghi lại mục tiêu của bên Nhật."},
+        {n:"Đề xuất gói xúc tiến",goal:"Trình đề xuất gói dịch vụ phù hợp ngân sách.",gate:"Chọn Gói dịch vụ. Đính kèm bản đề xuất. Đặt Hạn nộp đề xuất.",tasks:"Soạn và gửi đề xuất. Nhắc việc trước Hạn nộp."},
+        {n:"Đàm phán ngân sách",goal:"Chốt hạng mục và mức ngân sách.",gate:"Điền Ngân sách chốt. Xác định Người ra quyết định.",tasks:"Điều chỉnh gói, trao đổi điều khoản."},
+        {n:"Chờ phê duyệt phía tỉnh",goal:"Bên Nhật hoàn tất duyệt nội bộ.",gate:"Có thông báo chấp thuận hoặc bản hợp đồng nháp.",tasks:"Nhắc định kỳ. Chuẩn bị hợp đồng cùng Kế toán, Hành chính."},
+        {n:"Đàm phán HĐ",goal:"Thống nhất điều khoản và ký hợp đồng năm.",gate:"Điền nhóm trường hợp đồng (kỳ hiệu lực, giá trị chốt, KPI cam kết) và đính kèm file đã ký.",tasks:"Chỉnh sửa điều khoản cùng Kế toán, Hành chính. Cập nhật trạng thái hợp đồng."},
+        {n:"Tự động bắn sang Workflow",goal:"Deal Won tự tạo Job triển khai xúc tiến, Sales không phải nhập lại.",gate:"Nhóm trường hợp đồng đã điền đủ.",tasks:"Automation tạo Job trong Workflow, mang theo dữ liệu của Deal."}
+      ],
+      outcomes:[{k:"won",t:"Won · tạo Job"},{k:"lost",t:"Lost · ghi lý do thua"},{k:"hold",t:"Tạm hoãn · hẹn kỳ ngân sách sau"}]
+    },{
+      name:"Gia hạn hợp đồng xúc tiến",
+      desc:"Deal gia hạn sinh từ Deal Won sắp hết hạn, để việc gia hạn không phụ thuộc vào trí nhớ của Sales.",
+      stages:[
+        {n:"Sắp hết hạn",goal:"Bắt đầu chuẩn bị gia hạn trước khi hợp đồng hiện hành kết thúc.",gate:"Deal gia hạn được tạo từ Deal của kỳ trước và đã gắn Account.",tasks:"Việc nhắc sinh trước ngày hết hạn (số ngày do VJSC đặt). Tạo Deal gia hạn tự động nếu cấu hình được, nếu không thì Sales tạo theo việc nhắc."},
+        {n:"Đánh giá kết quả kỳ trước",goal:"Tổng hợp kết quả thực hiện để làm cơ sở đề xuất.",gate:"Đính kèm báo cáo kết quả so với KPI cam kết.",tasks:"Lấy số liệu từ Job của kỳ trước. Soạn báo cáo."},
+        {n:"Đề xuất kỳ mới",goal:"Trình đề xuất cho kỳ tiếp theo.",gate:"Chọn Gói dịch vụ và Ngân sách đề xuất cho kỳ mới.",tasks:"Gửi đề xuất. Đặt Hạn nộp đề xuất."},
+        {n:"Đàm phán ngân sách",goal:"Chốt ngân sách và hạng mục kỳ mới.",gate:"Điền Ngân sách chốt.",tasks:"Điều chỉnh gói, trao đổi điều khoản."},
+        {n:"Đàm phán HĐ",goal:"Thống nhất điều khoản và ký hợp đồng kỳ mới.",gate:"Điền nhóm trường hợp đồng cho kỳ mới và đính kèm file đã ký.",tasks:"Chỉnh sửa điều khoản cùng Kế toán, Hành chính."},
+        {n:"Tự động bắn sang Workflow",goal:"Deal Won tự tạo Job cho kỳ mới, Sales không phải nhập lại.",gate:"Nhóm trường hợp đồng đã điền đủ.",tasks:"Automation tạo Job trong Workflow, mang theo dữ liệu của Deal."}
+      ],
+      outcomes:[{k:"won",t:"Won · tạo Job kỳ mới"},{k:"lost",t:"Lost · ghi lý do thua"}]
+    }],
+    tour:[{
+      name:"Bán tour",
+      desc:"Từ yêu cầu của khách đến lúc đặt cọc. Việc làm hồ sơ visa, đặt dịch vụ mặt đất và điều hành hành trình thuộc Workflow.",
+      stages:[
+        {n:"Lead mới",goal:"Liên hệ khách và xác nhận nhu cầu.",gate:"Có Contact với số điện thoại hoặc Zalo, và điểm đến quan tâm.",tasks:"Liên hệ lần đầu. Ghi lại kênh khách dùng."},
+        {n:"Tư vấn",goal:"Hiểu số khách, ngày đi, ngân sách và yêu cầu riêng.",gate:"Điền Số khách, Ngày khởi hành mong muốn, Ngân sách mỗi khách, Dịch vụ đi kèm.",tasks:"Gọi tư vấn. Ghi yêu cầu đặc biệt vào Deal."},
+        {n:"Gửi chương trình và báo giá",goal:"Khách nhận chương trình và giá cụ thể.",gate:"Điền Giá báo. Đính kèm chương trình.",tasks:"Gửi báo giá. Việc nhắc follow-up sau số ngày do VJSC đặt."},
+        {n:"Chỉnh sửa và chốt",goal:"Thống nhất chương trình cuối cùng.",gate:"Khách xác nhận chương trình. Đặt Hạn cọc.",tasks:"Điều chỉnh theo phản hồi. Nhắc khách về hạn cọc."},
+        {n:"Đàm phán HĐ",goal:"Thống nhất điều khoản, khách đặt cọc, đơn đặt tour có hiệu lực.",gate:"Điền Tiền cọc và nhóm trường hợp đồng, đính kèm file.",tasks:"Theo dõi thanh toán đủ trên trường Trạng thái thanh toán."},
+        {n:"Tự động bắn sang Workflow",goal:"Deal Won tự tạo Job vận hành tour, Sales không phải nhập lại.",gate:"Đã đặt cọc và nhóm trường hợp đồng đã điền đủ.",tasks:"Automation tạo Job trong Workflow, mang theo dữ liệu của Deal."}
+      ],
+      outcomes:[{k:"won",t:"Won · tạo Job"},{k:"lost",t:"Lost · ghi lý do thua"},{k:"hold",t:"Hẹn lại · khách chưa chốt ngày đi"}]
+    }]
+  };
+
+  /* ---------- Tab 1: câu hỏi về hiện trạng ---------- */
+  var GRP=[
+    {k:"A",n:36,t:"Cầu nối Workflow → CRM",d:"Webhook: tạo hoặc cập nhật thương vụ, khách hàng, liên hệ, nhiệm vụ khi Workflow chạy"},
+    {k:"B",n:15,t:"Điều phối theo giai đoạn",d:"Deal chuyển giai đoạn: ghi trường, tạo to-do, tạo job, đổi tên thương vụ"},
+    {k:"D",n:15,t:"Khởi tạo bản ghi CRM",d:"Deal, Account, Contact được tạo: báo Workflow, gắn ID và link hai chiều"},
+    {k:"C",n:12,t:"Nhận thư và tạo việc",d:"Email mới trong hộp thư: tạo thương vụ hoặc nhiệm vụ, mỗi người một luồng"},
+    {k:"E",n:10,t:"Kết quả thương vụ và đồng bộ",d:"Won, lost, đổi chủ, đổi giá trị: báo Workflow tiếp tục hoặc thất bại"}
+  ];
+  var WR=[
+    {n:34,t:"Trường “dùng để chuyển về workflow”",d:"Bản sao dữ liệu để đẩy sang Workflow"},
+    {n:29,t:"Trường mảnh ghép mã tour",d:"Các mảnh để ghép mã tour"},
+    {n:17,t:"Trường Tour code",d:"Ghép mã tour nhiều lần ở nhiều nhánh"},
+    {n:14,t:"Bộ đếm “Số lần qua bước N”",d:"Chống chạy lặp khi kéo thương vụ lùi lại"},
+    {n:10,t:"Cờ pp-stage",d:"Cờ giai đoạn phụ"},
+    {n:10,t:"Đổi tên thương vụ",d:"Ghi tên bằng automation"}
+  ];
+
+  /* ---------- Tab 2: trước, sau ---------- */
+  var BA=[
+    {t:"Lead đầu vào",st:"ok",now:"Email vào hộp thư, 12 luồng riêng tạo thương vụ hoặc nhiệm vụ",nw:"Mỗi thư là một Lead, có dịch vụ và người phụ trách"},
+    {t:"Vai trò của hệ thống",st:"ok",now:"Automation ghi trường, tạo to-do, tạo job. 114 lần ghi trường trong pipeline 1.2",nw:"Sales cập nhật trực tiếp khi làm việc, automation chỉ liên kết"},
+    {t:"Theo dõi cơ hội",st:"ok",now:"Pipeline Japan Outbound có 19 giai đoạn, 10 là giai đoạn máy",nw:"Mỗi stage là một bước thật, có điều kiện để sang stage sau"},
+    {t:"Lịch sử khách hàng",st:"q",now:"Dữ liệu có thể nằm ở nhiều nơi",nw:"Mở một Account là thấy mọi Deal, ở mọi dịch vụ"},
+    {t:"Gia hạn xúc tiến",st:"q",now:"Cách nhắc gia hạn hiện nay",nw:"Deal gia hạn sinh từ hợp đồng sắp hết hạn, kèm việc nhắc"},
+    {t:"Bàn giao vận hành",st:"ok",now:"487 node HTTP gọi Workflow viết tay (next, edit, create, fail)",nw:"Job tạo từ Deal Won, mang đủ thông tin qua một khuôn dùng chung"}
+  ];
+
+  /* ---------- Tab 3: quyết định ---------- */
+  var QDEC=[
+    {a:"shared",area:"Định nghĩa Won",q:"Won tính ở lúc nào: khi ký hợp đồng hay khi khách đặt cọc?",
+     why:"Won là lúc tạo Job, nên mốc này quyết định vận hành bắt đầu khi nào. Đề xuất: ký hợp đồng cho Charter và Xúc tiến, đặt cọc cho Lữ hành."},
+    {a:"deal",area:"Cấu trúc Deal",q:"Mỗi pipeline có bộ trường Deal riêng không, và thông tin hợp đồng nên nằm ở đâu?",
+     why:"Đề xuất đang giả định Deal mỗi dịch vụ có bộ trường riêng và hợp đồng là nhóm trường trên Deal. Nếu một Deal cần nhiều bản ghi hợp đồng (nhiều đợt, nhiều phụ lục) thì cần phương án khác."},
+    {a:"shared",area:"Vai trò",q:"Mỗi dịch vụ có Sales riêng không, và ai cập nhật nhóm trường hợp đồng: Kế toán hay Hành chính?",
+     why:"Quyết định gán người phụ trách mặc định và ai được sửa trạng thái hợp đồng."},
+    {a:"shared",area:"Tự động hóa",q:"Cấu hình có làm được ba việc này không: tạo Lead từ thư đến, chuyển Lead thành Account, Contact, Deal, và tạo Job khi Deal Won?",
+     why:"Cần xác nhận khả năng cấu hình trên Base 2.0. Nếu chưa tự động được thì phương án dự phòng là nhập tay trên một màn hình."},
+    {a:"shared",area:"Dữ liệu cũ",q:"Có đưa lịch sử vào không: 188 chuyến bay và các hợp đồng xúc tiến nhiều năm?",
+     why:"Account có sẵn lịch sử là thứ thuyết phục Sales nhất khi bắt đầu dùng, nhưng việc nhập dữ liệu cũ tốn công."},
+    {a:"shared",area:"Số trường",q:"Mỗi object bắt buộc điền bao nhiêu trường ở giai đoạn đầu?",
+     why:"Bắt đầu với 4 đến 5 trường bắt buộc rồi tăng dần thì Sales dễ dùng hơn. Nhập quá nhiều thường là lý do hệ thống bị bỏ."}
+  ];
+
+  /* ---------- Render ---------- */
+  var fieldTable=function(f){
+    return '<div class="ftable"><div class="fhead"><span>Trường</span><span>Kiểu dữ liệu</span><span>Ví dụ</span></div>'+
+      f.map(function(r){return '<div class="frow"><div class="fname">'+esc(r[0])+'</div><div class="ftype">'+esc(r[1])+'</div><div class="fex">'+esc(r[2])+'</div></div>';}).join("")+'</div>';
+  };
+  var objCard=function(u,c){
+    var total=u.groups?u.groups.reduce(function(n,g){return n+g.f.length;},0):u.f.length;
+    var body=u.groups?u.groups.map(function(g){return '<div class="gtitle">'+esc(g.title)+'</div>'+fieldTable(g.f);}).join(""):fieldTable(u.f);
+    return '<article class="unit '+c+'"><header><h4>'+esc(u.name)+'</h4><span class="cnt">'+total+' trường ví dụ</span></header><p class="desc">'+esc(u.desc)+'</p>'+body+'</article>';
+  };
+
+  function renderMatrix(){
+    var cols=[["all","Ý nghĩa chung tại VJSC","shared"],["charter","Charter","charter"],["xtdl","Truyền thông & XTDL","xtdl"],["tour","Lữ hành / bán tour","tour"]];
+    var head='<div class="mhead"><div>Object Base CRM</div>'+cols.map(function(c){return '<div class="h-'+c[2]+'">'+esc(c[1])+'</div>';}).join("")+'</div>';
+    var rows=MAP.map(function(m){
+      return '<div class="mrow"><div class="mobj"><b>'+esc(m.o)+'</b><span>'+esc(m.def)+'</span></div>'+
+        cols.map(function(c){var x=m[c[0]];return '<div class="cell '+c[2]+'" data-label="'+esc(c[1])+'"><p>'+esc(x.t)+'</p><span class="ex">'+esc(x.e)+'</span></div>';}).join("")+'</div>';
+    }).join("");
+    $("matrix").innerHTML='<div class="mx">'+head+rows+'</div>';
+  }
+
+  function renderShared(){ $("shared-units").innerHTML=SHARED.map(function(u){return objCard(u,"shared");}).join(""); }
+  function renderSeg(){
+    $("seg-unit").innerHTML=SV.map(function(s){
+      return '<button type="button" class="'+s.id+'" data-svc="'+s.id+'" aria-pressed="'+(s.id===svc)+'"><i></i>'+esc(s.name)+'</button>';
+    }).join("");
+  }
+  function renderSvcUnits(){
+    var u=UNITS[svc], s=SV.filter(function(x){return x.id===svc;})[0];
+    $("svc-units").innerHTML='<div class="'+svc+'">'+objCard(u.deal,svc)+
+      '<div class="handoff"><h4>Dữ liệu mang sang Job ('+esc(s.name)+')</h4><p>Các thông tin này đi theo Deal Won sang Workflow để bộ phận vận hành không hỏi lại khách.</p><div class="tags">'+
+      u.handoff.map(function(t){return '<span>'+esc(t)+'</span>';}).join("")+'</div></div></div>';
+  }
+
+  function renderPipelines(){
+    $("pipe-all").innerHTML=SV.map(function(s){
+      var inner=PIPES[s.id].map(function(p){
+        var n=p.stages.length;
+        var rail=p.stages.map(function(st,k){
+          var c='nd stn'+(k===0?' first':'')+(k===n-1?' last':'');
+          return '<div class="'+c+'"><span class="num">'+(k+1)+'</span><b>'+esc(st.n)+'</b></div><span class="conn" aria-hidden="true" style="--i:'+k+'"></span>';
+        }).join("");
+        var fan='<div class="col fan">'+p.outcomes.map(function(o){
+          return '<div class="fo"><span class="conn sm" aria-hidden="true" style="--i:'+n+'"></span><span class="out '+o.k+'">'+esc(o.t)+'</span></div>';
+        }).join("")+'</div>';
+        var rows=p.stages.map(function(st,i){
+          return '<div class="stage"><div class="sn"><i>'+(i+1)+'</i><span>'+esc(st.n)+'</span></div>'+
+            '<div><span class="lbl">Mục tiêu</span><p>'+esc(st.goal)+'</p></div>'+
+            '<div><span class="lbl">Điều kiện để sang stage sau</span><p>'+esc(st.gate)+'</p></div>'+
+            '<div><span class="lbl">Việc cần làm</span><p>'+esc(st.tasks)+'</p></div></div>';
+        }).join("");
+        return '<article class="pflow"><header><h5>'+esc(p.name)+'</h5><p>'+esc(p.desc)+'</p></header>'+
+          '<div class="rail">'+rail+fan+'</div>'+
+          '<details class="pdet"><summary>Xem điều kiện và việc cần làm của từng stage</summary>'+rows+'</details></article>';
+      }).join("");
+      return '<section class="svcblock '+s.id+'"><div class="svchead"><h4>'+esc(s.full)+'</h4><span>'+esc(s.sub)+'</span></div>'+inner+'</section>';
+    }).join("");
+  }
+
+  function renderQs(id,list){
+    $(id).innerHTML=list.map(function(x){
+      return '<article class="q '+(x.a==="deal"?"shared":x.a)+'"><span class="area">'+esc(x.area)+'</span><h4>'+esc(x.q)+'</h4><p>'+esc(x.why)+'</p></article>';
+    }).join("");
+  }
+
+  function renderBars(id,list,max){
+    $(id).innerHTML=list.map(function(g){
+      return '<div class="gb"><div class="nm"><b>'+g.n+'</b>'+esc(g.t)+'</div><div class="tr"><i style="--w:'+Math.round(g.n/max*100)+'%"></i></div><div class="ds">'+esc(g.d)+'</div></div>';
+    }).join("");
+  }
+  function renderBA(){
+    var head='<div class="ba-h"><span>Chủ đề</span><span>Hôm nay</span><span></span><span>Với Base 2.0</span></div>';
+    var rows=BA.map(function(r){
+      var tag=r.st==="ok"?'<span class="st ok">ĐÃ XÁC NHẬN</span>':'<span class="st q">CẦN XÁC NHẬN</span>';
+      return '<div class="ba-r"><div class="t">'+esc(r.t)+'</div><div class="b">'+tag+'<span>'+esc(r.now)+'</span></div>'+
+        '<div class="arr"><span class="hc" aria-hidden="true"></span></div><div class="a">'+esc(r.nw)+'</div></div>';
+    }).join("");
+    $("ba").innerHTML=head+rows;
+  }
+
+  function setSvc(id){ svc=id; renderSeg(); renderSvcUnits(); }
+
+  /* ---------- Scenes ---------- */
+  var reduce=!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  function inboxLoop(){
+    var root=$("inbox"); if(!root) return;
+    var rows=root.querySelectorAll(".ib-r"), badge=$("ibc"), q=$("ibq"), i=0, n=rows.length;
+    for(var k=0;k<n;k++) rows[k].classList.add("show");
+    q.classList.add("show"); badge.textContent=n;
+    if(reduce) return;
+    function reset(){ for(var k=0;k<n;k++) rows[k].classList.remove("show"); q.classList.remove("show"); badge.textContent="0"; i=0; setTimeout(step,700); }
+    function step(){
+      if(!root.offsetParent){ setTimeout(step,1500); return; }
+      if(i<n){ rows[i].classList.add("show"); i++; badge.textContent=i; setTimeout(step,900); }
+      else if(!q.classList.contains("show")){ q.classList.add("show"); setTimeout(step,3200); }
+      else { reset(); }
+    }
+    setTimeout(reset,3800);
+  }
+  function kanbanLoop(){
+    var card=$("kcard"), kb=$("kb"); if(!card) return;
+    var seq=[1,2,3,3,1], j=0; card.style.setProperty("--ci",1);
+    if(reduce) return;
+    setInterval(function(){
+      if(!kb.offsetParent) return;
+      j=(j+1)%seq.length; card.style.setProperty("--ci",seq[j]);
+    },2000);
+  }
+
+  /* ---------- Tabs ---------- */
+  var TABS=["hien-trang","muc-tieu","how"];
+  var tabBtns=Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  var panels=Array.prototype.slice.call(document.querySelectorAll(".panel"));
+  function show(t){
+    if(TABS.indexOf(t)<0) t=TABS[0];
+    tabBtns.forEach(function(b){var on=b.getAttribute("data-tab")===t; b.setAttribute("aria-selected",on?"true":"false"); b.tabIndex=on?0:-1;});
+    panels.forEach(function(p){p.hidden=(p.id!=="p-"+t);});
+  }
+  function go(t){
+    show(t);
+    try{ if(location.hash.slice(1)!==t) location.hash=t; }catch(e){}
+    try{ var tb=document.querySelector(".tabbar"); window.scrollTo(0,Math.max(0,tb.offsetTop-0)); }catch(e){}
+  }
+  tabBtns.forEach(function(b){ b.addEventListener("click",function(){ go(b.getAttribute("data-tab")); }); });
+  Array.prototype.slice.call(document.querySelectorAll("[data-go]")).forEach(function(b){
+    b.addEventListener("click",function(){ go(b.getAttribute("data-go")); });
+  });
+  window.addEventListener("hashchange",function(){ show(location.hash.slice(1)); });
+  $("seg-unit").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-svc]"); if(b) setSvc(b.getAttribute("data-svc"));
+  });
+  $("subnav").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-to]"); if(!b) return;
+    var el=$(b.getAttribute("data-to")); if(el){ try{ el.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); }catch(x){ el.scrollIntoView(); } }
+  });
+
+  renderMatrix(); renderShared(); renderPipelines(); renderBars("grp-bars",GRP.map(function(g){return {n:g.n,t:g.k+". "+g.t,d:g.d};}),36); renderBars("wr-bars",WR,34); renderQs("qs-dec",QDEC); renderBA(); setSvc("charter");
+  inboxLoop(); kanbanLoop();
+  show(location.hash.slice(1));
+})();
+</script>
+
+</body>
+</html>
